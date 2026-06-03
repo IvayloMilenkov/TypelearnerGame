@@ -1,0 +1,94 @@
+@keyframes glitch {
+  0%   { text-shadow: 2px 0 #ff00ff, -2px 0 #00f5ff; transform: translate(0); }
+  20%  { text-shadow: -2px 0 #ff00ff, 2px 0 #00f5ff; transform: translate(-2px, 1px); }
+  40%  { text-shadow: 2px 0 #ff00ff, -2px 0 #00f5ff; transform: translate(2px, -1px); }
+  60%  { text-shadow: -2px 0 #ff00ff, 2px 0 #00f5ff; transform: translate(0); }
+  80%  { text-shadow: 2px 0 #ff00ff, -2px 0 #00f5ff; transform: translate(1px, 2px); }
+  100% { text-shadow: -2px 0 #ff00ff, 2px 0 #00f5ff; transform: translate(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  animation: fade-in 300ms ease-out;
+}
+
+.title {
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  font-weight: 900;
+  color: #ff2244;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: glitch 2s ease-in-out infinite;
+  margin-bottom: 0.3em;
+}
+
+.stats {
+  display: flex;
+  gap: 3rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.statLabel {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffffff55;
+}
+
+.statValue {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #00f5ff;
+  text-shadow: 0 0 10px #00f5ff88;
+}
+
+.newRecord {
+  font-size: 0.85rem;
+  color: #ffff00;
+  letter-spacing: 0.2em;
+  text-shadow: 0 0 8px #ffff0088;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  animation: glitch 1.5s ease-in-out infinite;
+}
+
+.btn {
+  background: transparent;
+  border: 2px solid #ff2244;
+  color: #ff2244;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 12px 36px;
+  cursor: pointer;
+  transition: background 150ms, box-shadow 150ms, transform 150ms;
+  box-shadow: 0 0 10px #ff224444;
+}
+
+.btn:hover {
+  background: #ff224418;
+  box-shadow: 0 0 20px #ff224488;
+  transform: scale(1.04);
+}

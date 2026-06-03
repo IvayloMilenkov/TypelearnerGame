@@ -1,0 +1,90 @@
+@keyframes fall {
+  from { transform: translateY(-80px); opacity: 0; }
+  8%   { opacity: 1; }
+  to   { transform: translateY(100vh); opacity: 1; }
+}
+
+@keyframes active-pulse {
+  0%, 100% { filter: brightness(1.2); }
+  50%       { filter: brightness(2.2); }
+}
+
+@keyframes explode {
+  0%   { transform: scale(1); opacity: 1; filter: brightness(1); }
+  25%  { transform: scale(2); opacity: 1; filter: brightness(5); }
+  60%  { transform: scale(3.5); opacity: 0.4; filter: brightness(2); }
+  100% { transform: scale(5); opacity: 0; }
+}
+
+@keyframes shard-1 { to { transform: translate(-50px, -60px) scale(0); opacity: 0; } }
+@keyframes shard-2 { to { transform: translate( 50px, -60px) scale(0); opacity: 0; } }
+@keyframes shard-3 { to { transform: translate(-65px,  5px)  scale(0); opacity: 0; } }
+@keyframes shard-4 { to { transform: translate( 65px,  5px)  scale(0); opacity: 0; } }
+@keyframes shard-5 { to { transform: translate(  5px,  65px) scale(0); opacity: 0; } }
+@keyframes shard-6 { to { transform: translate(-30px, -70px) scale(0); opacity: 0; } }
+
+/* Falling letter container */
+.letter {
+  position: absolute;
+  top: 0;
+  font-weight: 900;
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+
+/* Word mode character states */
+.typed {
+  opacity: 0.2;
+}
+
+.active {
+  opacity: 1;
+  animation: active-pulse 600ms ease-in-out infinite;
+  display: inline-block;
+}
+
+.upcoming {
+  opacity: 0.7;
+}
+
+/* Explosion — fixed-position portal */
+.explosion {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-family: 'Courier New', Courier, monospace;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 500;
+  animation: explode 360ms ease-out forwards;
+  transform-origin: center;
+}
+
+.shard {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-duration: 380ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+.shard:nth-child(2) { animation-name: shard-1; }
+.shard:nth-child(3) { animation-name: shard-2; }
+.shard:nth-child(4) { animation-name: shard-3; }
+.shard:nth-child(5) { animation-name: shard-4; }
+.shard:nth-child(6) { animation-name: shard-5; }
+.shard:nth-child(7) { animation-name: shard-6; }

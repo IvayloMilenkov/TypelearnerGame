@@ -1,0 +1,59 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --cyan: #00f5ff;
+  --magenta: #ff00ff;
+  --yellow: #ffff00;
+  --red: #ff2244;
+  --bg: #060612;
+  --hud-bg: rgba(0, 10, 30, 0.85);
+  --font: 'Courier New', Courier, monospace;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: #fff;
+  font-family: var(--font);
+}
+
+/* Starfield background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, #ffffff44 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 60%, #ffffff33 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 30%, #ffffff55 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 80%, #ffffff44 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 10%, #ffffff33 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 50%, #ffffff55 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 90%, #ffffff44 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 75%, #ffffff33 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 45%, #ffffff55 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 25%, #ffffff44 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 65%, #ffffff33 0%, transparent 100%),
+    radial-gradient(1px 1px at 5% 40%, #ffffff55 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 70%, #ffffff44 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 5%, #ffffff33 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 35%, #ffffff55 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 95%, #ffffff44 0%, transparent 100%),
+    radial-gradient(1px 1px at 95% 20%, #ffffff33 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 55%, #ffffff55 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 85%, #ffffff44 0%, transparent 100%),
+    radial-gradient(1px 1px at 8% 72%, #ffffff33 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
