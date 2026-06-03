@@ -1,39 +1,59 @@
 import { useState, useCallback } from 'react';
 import Menu from './components/Menu';
 import Game from './components/Game';
+import TimedGame from './components/TimedGame';
 import GameOver from './components/GameOver';
 import './styles/global.css';
 
-function hsKey(mode) {
-  return `keybomb_hs_${mode}`;
+function hsKey(format, mode) {
+  return `keybomb_hs_${format}_${mode}`;
 }
 
-function getHighScore(mode) {
-  return parseInt(localStorage.getItem(hsKey(mode)) || '0', 10);
+function getHighScore(format, mode) {
+  return parseInt(localStorage.getItem(hsKey(format, mode)) || '0', 10);
 }
 
-function saveHighScore(mode, score) {
-  if (score > getHighScore(mode)) localStorage.setItem(hsKey(mode), String(score));
+function saveHighScore(format, mode, score) {
+  if (score > getHighScore(format, mode)) {
+    localStorage.setItem(hsKey(format, mode), String(score));
+  }
+}
+
+function buildStats(format, result) {
+  if (format === 'timed') {
+    return [
+      { label: 'Score',  value: result.score },
+      { label: 'Words',  value: result.wordsCompleted },
+      { label: 'WPM',    value: result.wordsCompleted }, // 60s run → words = WPM
+    ];
+  }
+  return [
+    { label: 'Score',      value: result.score },
+    { label: 'Best Combo', value: `x${result.maxCombo}` },
+    { label: 'Destroyed',  value: result.destroyed },
+  ];
 }
 
 export default function App() {
   const [phase, setPhase] = useState('menu');
   const [mode, setMode] = useState('easy');
+  const [format, setFormat] = useState('endless');
   const [gameResult, setGameResult] = useState(null);
-  const [highScore, setHighScore] = useState(() => getHighScore('easy'));
+  const [highScore, setHighScore] = useState(() => getHighScore('endless', 'easy'));
 
-  const handleStart = useCallback((selectedMode) => {
+  const handleStart = useCallback((selectedMode, selectedFormat) => {
     setMode(selectedMode);
-    setHighScore(getHighScore(selectedMode));
+    setFormat(selectedFormat);
+    setHighScore(getHighScore(selectedFormat, selectedMode));
     setPhase('playing');
   }, []);
 
   const handleGameOver = useCallback((result) => {
-    saveHighScore(mode, result.score);
-    setHighScore(getHighScore(mode));
+    saveHighScore(format, mode, result.score);
+    setHighScore(getHighScore(format, mode));
     setGameResult(result);
     setPhase('gameover');
-  }, [mode]);
+  }, [format, mode]);
 
   const handleRestart = useCallback(() => {
     setGameResult(null);
@@ -45,15 +65,26 @@ export default function App() {
     setPhase('menu');
   }, []);
 
+  const gameKey = `${format}-${mode}-${Date.now()}`;
+
   return (
     <>
       {phase === 'menu' && (
         <Menu onStart={handleStart} highScore={highScore} />
       )}
 
-      {phase === 'playing' && (
+      {phase === 'playing' && format === 'endless' && (
         <Game
-          key={`${mode}-${Date.now()}`}
+          key={gameKey}
+          mode={mode}
+          onGameOver={handleGameOver}
+          onQuitToMenu={handleQuitToMenu}
+        />
+      )}
+
+      {phase === 'playing' && format === 'timed' && (
+        <TimedGame
+          key={gameKey}
           mode={mode}
           onGameOver={handleGameOver}
           onQuitToMenu={handleQuitToMenu}
@@ -63,8 +94,7 @@ export default function App() {
       {phase === 'gameover' && gameResult && (
         <GameOver
           score={gameResult.score}
-          maxCombo={gameResult.maxCombo}
-          destroyed={gameResult.destroyed}
+          stats={buildStats(format, gameResult)}
           highScore={highScore}
           onRestart={handleRestart}
         />

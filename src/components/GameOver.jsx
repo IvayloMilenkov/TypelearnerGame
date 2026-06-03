@@ -1,6 +1,6 @@
 import styles from '../styles/GameOver.module.css';
 
-export default function GameOver({ score, maxCombo, destroyed, highScore, onRestart }) {
+export default function GameOver({ stats, highScore, score, onRestart }) {
   const isNewRecord = score > 0 && score >= highScore;
 
   return (
@@ -10,18 +10,12 @@ export default function GameOver({ score, maxCombo, destroyed, highScore, onRest
       {isNewRecord && <p className={styles.newRecord}>New Record!</p>}
 
       <div className={styles.stats}>
-        <div className={styles.stat}>
-          <span className={styles.statLabel}>Score</span>
-          <span className={styles.statValue}>{score.toLocaleString()}</span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.statLabel}>Best Combo</span>
-          <span className={styles.statValue}>x{maxCombo}</span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.statLabel}>Destroyed</span>
-          <span className={styles.statValue}>{destroyed}</span>
-        </div>
+        {stats.map(({ label, value }) => (
+          <div key={label} className={styles.stat}>
+            <span className={styles.statLabel}>{label}</span>
+            <span className={styles.statValue}>{typeof value === 'number' ? value.toLocaleString() : value}</span>
+          </div>
+        ))}
       </div>
 
       <button className={styles.btn} onClick={onRestart}>

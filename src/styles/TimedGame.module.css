@@ -1,0 +1,123 @@
+@keyframes timer-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.08); }
+}
+
+@keyframes flash-red {
+  0%   { background: rgba(255, 34, 68, 0); }
+  20%  { background: rgba(255, 34, 68, 0.2); }
+  100% { background: rgba(255, 34, 68, 0); }
+}
+
+.arena {
+  position: fixed;
+  inset: 0;
+  padding-top: 80px;
+  overflow: hidden;
+}
+
+/* Inline HUD bar */
+.hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: rgba(0, 10, 30, 0.85);
+  border-bottom: 1px solid #00f5ff33;
+  backdrop-filter: blur(6px);
+}
+
+.hudSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 120px;
+}
+
+.hudSection.center {
+  align-items: center;
+}
+
+.hudSection.right {
+  align-items: flex-end;
+}
+
+.hudLabel {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffffff55;
+  margin-bottom: 2px;
+}
+
+.hudValue {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #00f5ff;
+  text-shadow: 0 0 10px #00f5ff88;
+  letter-spacing: 0.05em;
+}
+
+/* Timer states */
+.timer {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #00f5ff;
+  text-shadow: 0 0 12px #00f5ff88;
+  letter-spacing: 0.1em;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.timerDanger {
+  color: #ff2244;
+  text-shadow: 0 0 12px #ff224488;
+  animation: timer-pulse 500ms ease-in-out infinite;
+}
+
+/* Progress bar under timer */
+.progressBar {
+  width: 80px;
+  height: 3px;
+  background: #ffffff11;
+  border-radius: 2px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: #00f5ff;
+  box-shadow: 0 0 6px #00f5ff;
+  transition: width 1s linear, background 300ms;
+}
+
+.progressFillDanger {
+  background: #ff2244;
+  box-shadow: 0 0 6px #ff2244;
+}
+
+/* Flash overlay on wrong key */
+.flashOverlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  animation: flash-red 350ms ease-out forwards;
+}
+
+/* Bottom accent line */
+.accentLine {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 100;
+  background: linear-gradient(90deg, #00f5ff, #ff00ff);
+  box-shadow: 0 0 8px #00f5ff;
+}
