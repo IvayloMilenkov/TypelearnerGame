@@ -1,0 +1,69 @@
+.trigger {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 600;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 245, 255, 0.35);
+  background: rgba(0, 10, 30, 0.6);
+  color: rgba(0, 245, 255, 0.55);
+  font-family: var(--font);
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.15s ease, color 0.15s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.trigger:hover {
+  color: var(--magenta);
+  border-color: var(--magenta);
+  box-shadow: 0 0 16px rgba(255, 0, 255, 0.6);
+  transform: scale(1.12) rotate(8deg);
+}
+
+.canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 580;
+  pointer-events: none;
+}
+
+.message {
+  position: fixed;
+  inset: 0;
+  z-index: 590;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.messageText {
+  font-family: var(--font);
+  font-size: clamp(28px, 7vw, 84px);
+  font-weight: bold;
+  text-align: center;
+  padding: 0 24px;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow:
+    0 0 8px var(--cyan),
+    0 0 20px var(--magenta),
+    0 0 40px var(--magenta),
+    0 0 70px var(--yellow);
+  animation: pop 0.4s ease-out both, wobble 2.5s ease-in-out infinite 0.4s;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.3); opacity: 0; }
+  70% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(-2deg) scale(1); }
+  50% { transform: rotate(2deg) scale(1.03); }
+}

@@ -3,6 +3,7 @@ import Menu from './components/Menu';
 import Game from './components/Game';
 import TimedGame from './components/TimedGame';
 import GameOver from './components/GameOver';
+import EasterEgg from './components/EasterEgg';
 import './styles/global.css';
 
 function hsKey(format, mode) {
@@ -38,12 +39,14 @@ export default function App() {
   const [phase, setPhase] = useState('menu');
   const [mode, setMode] = useState('easy');
   const [format, setFormat] = useState('endless');
+  const [duration, setDuration] = useState(30);
   const [gameResult, setGameResult] = useState(null);
   const [highScore, setHighScore] = useState(() => getHighScore('endless', 'easy'));
 
-  const handleStart = useCallback((selectedMode, selectedFormat) => {
+  const handleStart = useCallback((selectedMode, selectedFormat, selectedDuration = 30) => {
     setMode(selectedMode);
     setFormat(selectedFormat);
+    setDuration(selectedDuration);
     setHighScore(getHighScore(selectedFormat, selectedMode));
     setPhase('playing');
   }, []);
@@ -86,6 +89,7 @@ export default function App() {
         <TimedGame
           key={gameKey}
           mode={mode}
+          duration={duration}
           onGameOver={handleGameOver}
           onQuitToMenu={handleQuitToMenu}
         />
@@ -99,6 +103,8 @@ export default function App() {
           onRestart={handleRestart}
         />
       )}
+
+      <EasterEgg />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import styles from '../styles/FallingLetter.module.css';
+import { getCharColor } from '../utils/fingerColors';
 
 function getFontSize(len) {
   if (len <= 1) return '2.4rem';
@@ -28,8 +29,9 @@ export default function FallingLetter({ letter, onMiss, onDestroyDone, paused })
     if (!destroyed) onMiss(id);
   }
 
-  const glow = color;
-  const textShadow = `0 0 8px ${glow}, 0 0 20px ${glow}, 0 0 40px ${glow}`;
+  // Fall-speed color used only for the explosion flash
+  const explodeColor = color;
+  const explodeGlow = `0 0 8px ${explodeColor}, 0 0 20px ${explodeColor}, 0 0 40px ${explodeColor}`;
 
   return (
     <>
@@ -38,8 +40,6 @@ export default function FallingLetter({ letter, onMiss, onDestroyDone, paused })
         className={styles.letter}
         style={{
           left: `${x}%`,
-          color: glow,
-          textShadow,
           fontSize: getFontSize(text.length),
           animationDuration: `${fallDurationSec}s`,
           animationPlayState: paused ? 'paused' : 'running',
@@ -47,16 +47,21 @@ export default function FallingLetter({ letter, onMiss, onDestroyDone, paused })
         }}
         onAnimationEnd={handleAnimationEnd}
       >
-        {text.length === 1 ? text : text.split('').map((ch, i) => (
-          <span
-            key={i}
-            className={
-              i < typedCount ? styles.typed :
-              i === typedCount ? styles.active :
-              styles.upcoming
-            }
-          >{ch}</span>
-        ))}
+        {text.split('').map((ch, i) => {
+          const charColor = getCharColor(ch);
+          return (
+            <span
+              key={i}
+              className={
+                text.length === 1 ? undefined :
+                i < typedCount ? styles.typed :
+                i === typedCount ? styles.active :
+                styles.upcoming
+              }
+              style={{ color: charColor, textShadow: `0 0 8px ${charColor}99, 0 0 20px ${charColor}55` }}
+            >{ch}</span>
+          );
+        })}
       </div>
 
       {explodeRect && createPortal(
@@ -67,8 +72,8 @@ export default function FallingLetter({ letter, onMiss, onDestroyDone, paused })
             left: explodeRect.left,
             width: explodeRect.width,
             height: explodeRect.height,
-            color: glow,
-            textShadow,
+            color: explodeColor,
+            textShadow: explodeGlow,
             fontSize: getFontSize(text.length),
           }}
         >
@@ -77,7 +82,7 @@ export default function FallingLetter({ letter, onMiss, onDestroyDone, paused })
             <span
               key={i}
               className={styles.shard}
-              style={{ background: glow, boxShadow: `0 0 6px ${glow}` }}
+              style={{ background: explodeColor, boxShadow: `0 0 6px ${explodeColor}` }}
             />
           ))}
         </div>,

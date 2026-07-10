@@ -1,0 +1,125 @@
+@keyframes guide-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: #060612dd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: guide-in 200ms ease-out;
+}
+
+.panel {
+  background: #0d0d22;
+  border: 1px solid #ffffff22;
+  padding: 2rem 2.4rem 1.6rem;
+  max-width: 660px;
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  position: relative;
+  box-shadow: 0 0 40px #00f5ff0a, inset 0 0 20px #00f5ff04;
+}
+
+.heading {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #ffffff55;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 0.8rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: #ffffff44;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 6px;
+  transition: color 150ms;
+}
+
+.closeBtn:hover {
+  color: #ffffffaa;
+}
+
+/* Keyboard layout */
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  user-select: none;
+}
+
+.row {
+  display: flex;
+  gap: 5px;
+}
+
+.row:nth-child(2) { margin-left: 22px; }
+.row:nth-child(3) { margin-left: 44px; }
+
+.key {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  font-weight: 900;
+  border-radius: 4px;
+  border: 1px solid;
+  box-sizing: border-box;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.2rem;
+  justify-content: center;
+  padding-top: 0.4rem;
+  border-top: 1px solid #ffffff11;
+  width: 100%;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legendLabel {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: #ffffff66;
+}
+
+.escHint {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: #ffffff22;
+}

@@ -163,8 +163,60 @@
   transform: scale(0.97);
 }
 
+/* Duration picker (TIMED only) */
+.durationSelector {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1rem;
+  border: 1px solid #ffffff22;
+}
+
+.durationBtn {
+  flex: 1;
+  padding: 6px 18px;
+  background: transparent;
+  border: none;
+  color: #ffffff44;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: background 150ms, color 150ms;
+}
+
+.durationBtn:hover {
+  background: #00f5ff0a;
+  color: #ffffffaa;
+}
+
+.durationActive {
+  background: #00f5ff15;
+  color: #00f5ff;
+  box-shadow: inset 0 0 8px #00f5ff0f;
+}
+
+.guideBtn {
+  margin-top: 0.8rem;
+  background: transparent;
+  border: none;
+  color: #ffffff33;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 150ms;
+  padding: 4px 8px;
+}
+
+.guideBtn:hover {
+  color: #cc44ffaa;
+}
+
 .hint {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   font-size: 0.75rem;
   color: #ffffff33;
   letter-spacing: 0.15em;

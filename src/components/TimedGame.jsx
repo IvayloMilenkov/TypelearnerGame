@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import WordTarget from './WordTarget';
+import PauseMenu from './PauseMenu';
 import styles from '../styles/TimedGame.module.css';
 import { normalWords, expertWords } from '../utils/wordLists.js';
-import { getLetterColor } from '../utils/difficulty.js';
-
-const DURATION = 60;
 
 function pickWord(mode, lastWord) {
   if (mode === 'easy') {
@@ -19,7 +17,8 @@ function pickWord(mode, lastWord) {
   return word;
 }
 
-export default function TimedGame({ mode, onGameOver, onQuitToMenu }) {
+export default function TimedGame({ mode, duration = 30, onGameOver, onQuitToMenu }) {
+  const DURATION = duration;
   const initialWord = pickWord(mode, null);
 
   const [text, setText] = useState(initialWord);
@@ -30,21 +29,24 @@ export default function TimedGame({ mode, onGameOver, onQuitToMenu }) {
   const [wordsCompleted, setWordsCompleted] = useState(0);
   const [shaking, setShaking] = useState(false);
   const [flashing, setFlashing] = useState(false);
+  const [paused, setPaused] = useState(false);
 
   const textRef = useRef(initialWord);
   const typedCountRef = useRef(0);
   const scoreRef = useRef(0);
   const wordsRef = useRef(0);
   const gameOverFiredRef = useRef(false);
+  const pausedRef = useRef(false);
 
   useEffect(() => { textRef.current = text; }, [text]);
   useEffect(() => { typedCountRef.current = typedCount; }, [typedCount]);
   useEffect(() => { scoreRef.current = score; }, [score]);
   useEffect(() => { wordsRef.current = wordsCompleted; }, [wordsCompleted]);
 
-  // Countdown
+  // Countdown — skips ticks while paused
   useEffect(() => {
     const interval = setInterval(() => {
+      if (pausedRef.current) return;
       setTimeLeft(t => {
         if (t <= 1) {
           clearInterval(interval);
@@ -67,6 +69,19 @@ export default function TimedGame({ mode, onGameOver, onQuitToMenu }) {
     }
   }, [timeLeft, onGameOver]);
 
+  // Escape to pause/resume
+  useEffect(() => {
+    function onEsc(e) {
+      if (e.key !== 'Escape') return;
+      setPaused(p => {
+        pausedRef.current = !p;
+        return !p;
+      });
+    }
+    window.addEventListener('keydown', onEsc);
+    return () => window.removeEventListener('keydown', onEsc);
+  }, []);
+
   const advanceWord = useCallback(() => {
     const basePoints = mode === 'expert' ? 60 : mode === 'normal' ? 30 : 10;
     const newScore = scoreRef.current + basePoints;
@@ -83,7 +98,7 @@ export default function TimedGame({ mode, onGameOver, onQuitToMenu }) {
   // Key handler
   useEffect(() => {
     function handleKey(e) {
-      if (timeLeft === 0) return;
+      if (timeLeft === 0 || pausedRef.current) return;
       const key = e.key.toUpperCase();
       if (key.length !== 1 || key < 'A' || key > 'Z') return;
 
@@ -98,7 +113,6 @@ export default function TimedGame({ mode, onGameOver, onQuitToMenu }) {
           setTypedCount(newCount);
         }
       } else {
-        // Wrong key — shake and flash, no penalty
         setShaking(true);
         setFlashing(true);
         setTimeout(() => setShaking(false), 230);
@@ -112,10 +126,17 @@ export default function TimedGame({ mode, onGameOver, onQuitToMenu }) {
 
   const isDanger = timeLeft <= 10;
   const progressPct = (timeLeft / DURATION) * 100;
-  const wordColor = getLetterColor(timeLeft > 10 ? 5 : 2); // cyan normally, magenta at danger
+
+  function handleResume() {
+    pausedRef.current = false;
+    setPaused(false);
+  }
 
   return (
     <>
+      {/* Pause overlay */}
+      {paused && <PauseMenu onResume={handleResume} onQuit={onQuitToMenu} />}
+
       {/* Inline HUD */}
       <div className={styles.hud}>
         <div className={styles.hudSection}>
@@ -149,7 +170,6 @@ export default function TimedGame({ mode, onGameOver, onQuitToMenu }) {
           typedCount={typedCount}
           shaking={shaking}
           wordKey={wordKey}
-          color={wordColor}
         />
       </div>
 
